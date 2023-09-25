@@ -1,15 +1,11 @@
 const express= require('express');
 const router= express.Router();
+const path= require('path');
 const fs= require('fs');
 
 
 router.get('/login', (req, res) => {
-    res.send(`
-        <form action="/" onsubmit="localStorage.setItem('uname',document.getElementById('uname').value)" method="post">
-           Username: <input type="text" id="uname" name="uname"><br>
-           <button type="submit">Login</button> 
-        </form>
-    `)
+    res.sendFile(path.join(__dirname,'../','views','login.html'));
 
 });
 
@@ -19,13 +15,12 @@ router.post('/',(req, res) => {
         { 
           console.log(err);
           data= "Anandy u have no friend";
-
         }
         res.send(`${data} <form action="/message" method="post" onsubmit="document.getElementById('uname').value=localStorage.getItem('uname')">
         <input type="hidden" id="uname" name="uname" ><br>
         Message:<input type="text" id="message" name="message"> 
         <button type="submit">Login</button> 
-        </form>`)
+        </form>`) 
     })
      
 })
@@ -45,7 +40,7 @@ router.get('/',(req, res) => {
      
 })
 
-router.post('/message',(req, res) => {
+router.post('/message',(req, res) =>{
     //console.log(req.body);
     const uname= req.body.uname;
     const message= req.body.message;
@@ -60,6 +55,16 @@ router.post('/message',(req, res) => {
 
     
 })
+
+router.use('/contact_us',(req, res)=>{
+    res.sendFile(path.join(__dirname, '../','views','contactus.html'));
+})
+
+router.use('/success',(req, res)=>{
+    res.sendFile(path.join(__dirname, '../','views','success.html'));
+})
+
+
 
 router.use('/',(req,res)=>{
     res.send(`404 THIS NOT FOUND`);
